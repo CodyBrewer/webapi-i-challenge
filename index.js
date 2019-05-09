@@ -56,6 +56,16 @@ server.delete("/api/users/:id", (req, res) => {
     });
 });
 //put - /api/users/:id - updates the user with the specified `id` using data from the ` request body`. Returns the modified document, **NOT the origina;**.
+server.put("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  const user = req.body;
+
+  update(id, user).then(updatedUser => {
+    updatedUser
+      ? res.json(updatedUser)
+      : res.status(404).json({ err: "incorrect id" });
+  });
+});
 
 //listen
 server.listen(5000, () => {
