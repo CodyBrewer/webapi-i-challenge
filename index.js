@@ -9,14 +9,20 @@ const { find, findById, insert, update, remove } = db;
 //post - /api/users - create a user using the information sent inside the database
 server.post("/api/users", (req, res) => {
   const newUser = req.body;
+  const name = req.body.name;
+  const bio = req.body.bio;
 
-  insert(newUser)
-    .then(addedUser => {
-      res.status(201).json(addedUser);
-    })
-    .catch(({ code, message }) => {
-      res.status(code).json({ err: message });
-    });
+  name && bio
+    ? insert(newUser)
+        .then(addedUser => {
+          res.status(201).json(addedUser);
+        })
+        .catch(({ code, message }) => {
+          res.status(code).json({ err: message });
+        })
+    : res
+        .status(400)
+        .json({ err: "Please provide name and bio for the user." });
 });
 
 //get - /api/users - returns an array of all the user objects contained in the database
