@@ -31,22 +31,30 @@ server.get("/api/users", (req, res) => {
     });
 });
 //get - /api/users/:id - returns the user object with the specified `id`
-server.get('/api/users/:id', (req, res) => {
-    const { id} = req.params
-    
-    findById(id)
-    .then(user =>{
-        res.json(user);
-        res.status(200);
+server.get("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+
+  findById(id)
+    .then(user => {
+      res.json(user);
+      res.status(200);
     })
     .catch(err => {
-        res.status(500).res.send(err);
-      });
-   
-    
-}) 
+      res.status(500).res.send(err);
+    });
+});
 //delete - /api/users/:id removes the user with the specified `id` and returns the deleted user.
+server.delete("/api/users/:id", (req, res) => {
+  const { id } = req.params;
 
+  remove(id)
+    .then(removedUser => {
+      res.json(removedUser);
+    })
+    .catch(({ code, message }) => {
+      res.status(code).json({ err: message });
+    });
+});
 //put - /api/users/:id - updates the user with the specified `id` using data from the ` request body`. Returns the modified document, **NOT the origina;**.
 
 //listen
